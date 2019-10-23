@@ -1,0 +1,48 @@
+version: "3"
+services:
+  catalog-web:
+    container_name: catalog-web
+    image: filipe/catalog-web:v1
+    restart: always
+    build: ./web/.
+    ports:
+      - "3000:3000"
+    links:
+      - catalog-api
+    depends_on:
+      - "catalog-api"
+    env_file: ./web/.env
+    networks:
+      - catalog-network    
+    hostname: catalog-web
+  catalog-api:
+    container_name: catalog-api
+    image: filipe/catalog-api:v1
+    restart: always
+    build: ./api/.
+    ports:
+      - "9000:9000"
+    links:
+      - mysql
+    depends_on:
+      - "mysql"
+    env_file: ./api/.env
+    networks:
+      - catalog-network    
+    hostname: catalog-api
+    environment: 
+      WAIT_HOSTS: mysql:3306
+  mysql:
+    image: mysql:5.6
+    ports: 
+      - "3306:3306"
+    networks:
+      - catalog-network
+    restart: always
+    environment: 
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: catalog
+    hostname: mysql
+networks:
+  catalog-network:
+    driver: bridge
