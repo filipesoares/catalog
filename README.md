@@ -1,6 +1,6 @@
 # Catalog App
 
-Sample application of discs catalog made with stack NodeJS, ReactJS and MySQL
+Sample application of discs catalog made with NodeJS, ReactJS and MySQL
 
 ## Running with Docker
 
